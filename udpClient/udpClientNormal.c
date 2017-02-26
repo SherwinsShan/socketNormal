@@ -58,10 +58,10 @@ int createUdpClient(udpClient *client)
 
 
 //******************************* RW Function *************************************/
-int udpClient_getDataFrom(udpClient *client, char *data, int dataLength, struct sockaddr_in addr)
+int udpClient_getDataFrom(udpClient *client, char *data, int dataLength, struct sockaddr_in *addr)
 {
     int len = sizeof(struct sockaddr_in);
-    int ret = recvfrom(client->fd, data, dataLength, 0, (struct sockaddr *)&addr, &len);
+    int ret = recvfrom(client->fd, data, dataLength, 0, (struct sockaddr *)addr, &len);
     if(ret == -1)
     {
         UDP_CLIENT_SET_ERR(client, UDP_CLIENT_ERR_RECV, errno);
@@ -78,10 +78,10 @@ int udpClient_getDataFromEx(udpClient *client, char *data, int dataLength, const
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(addrStr);
 
-    return udpClient_getDataFrom(client, data, dataLength, addr);
+    return udpClient_getDataFrom(client, data, dataLength, &addr);
 }
 
-int udpClient_getDataFrom_timeout(udpClient *client, char *data, int dataLength, struct sockaddr_in addr, long s, long us)
+int udpClient_getDataFrom_timeout(udpClient *client, char *data, int dataLength, struct sockaddr_in *addr, long s, long us)
 {
     int ret = select_read(client->fd, s, us);
     if(ret < 0)//error
@@ -108,15 +108,15 @@ int udpClient_getDataFromEx_timeout(udpClient *client, char *data, int dataLengt
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(addrStr);
 
-    return udpClient_getDataFrom_timeout(client, data, dataLength, addr, s, us);
+    return udpClient_getDataFrom_timeout(client, data, dataLength, &addr, s, us);
 }
 
 
 
-int udpClient_sendDataTo(udpClient *client, const char *data, int dataLength, struct sockaddr_in addr)
+int udpClient_sendDataTo(udpClient *client, const char *data, int dataLength, struct sockaddr_in *addr)
 {
     int len = sizeof(struct sockaddr_in);
-    int ret = sendto(client->fd, data, dataLength, 0, (struct sockaddr *)&addr, len);
+    int ret = sendto(client->fd, data, dataLength, 0, (struct sockaddr *)addr, len);
     if(ret == -1)
     {
         UDP_CLIENT_SET_ERR(client, UDP_CLIENT_ERR_WRITE, errno);
@@ -133,5 +133,5 @@ int udpClient_sendDataToEx(udpClient *client,const char *data, int dataLength, c
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(addrStr);
 
-    return udpClient_sendDataTo(client, data, dataLength, addr);
+    return udpClient_sendDataTo(client, data, dataLength, &addr);
 }

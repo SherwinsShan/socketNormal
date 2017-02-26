@@ -39,7 +39,7 @@ int udpServer_waitData(udpServer *server, char* data, int dataLength);
 int udpServer_waitData_timeout(udpServer *server, char* data, int dataLength, long s, long us);
 int udpServer_ackData(udpServer *server, const char* data, int dataLength);
 
-int udpServer_sendData(udpServer *server, const char* data, int dataLength, struct sockaddr_in clientAddr);
+int udpServer_sendData(udpServer *server, const char* data, int dataLength, struct sockaddr_in *clientAddr);
 int udpServer_sendDataEx(udpServer *server, const char* data, int dataLength, const char* addr, int port);
 
 char* udpServer_getClientAddr(udpServer *server);

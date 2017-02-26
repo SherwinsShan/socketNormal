@@ -28,13 +28,13 @@ int createUdpClient(udpClient *client);
 
 
 
-int udpClient_getDataFrom(udpClient *client, char *data, int dataLength, struct sockaddr_in addr);
+int udpClient_getDataFrom(udpClient *client, char *data, int dataLength, struct sockaddr_in *addr);
 int udpClient_getDataFromEx(udpClient *client, char *data, int dataLength, const char *addrStr, int port);
 
-int udpClient_getDataFrom_timeout(udpClient *client, char *data, int dataLength, struct sockaddr_in addr, long s, long us);
+int udpClient_getDataFrom_timeout(udpClient *client, char *data, int dataLength, struct sockaddr_in *addr, long s, long us);
 int udpClient_getDataFromEx_timeout(udpClient *client, char *data, int dataLength, const char *addrStr, int port, long s, long us);
 
-int udpClient_sendDataTo(udpClient *client, const char *data, int dataLength, struct sockaddr_in addr);
+int udpClient_sendDataTo(udpClient *client, const char *data, int dataLength, struct sockaddr_in *addr);
 int udpClient_sendDataToEx(udpClient *client,const char *data, int dataLength, const char *addrStr, int port);
 
 

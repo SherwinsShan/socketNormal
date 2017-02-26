@@ -131,9 +131,9 @@ int udpServer_ackData(udpServer *server, const char* data, int dataLength)
     return ret;
 }
 
-int udpServer_sendData(udpServer *server, const char* data, int dataLength, struct sockaddr_in clientAddr)
+int udpServer_sendData(udpServer *server, const char* data, int dataLength, struct sockaddr_in *clientAddr)
 {
-    int ret = sendto(server->socketFd, data, dataLength, 0, (struct sockaddr *)&clientAddr, sizeof(clientAddr));
+    int ret = sendto(server->socketFd, data, dataLength, 0, (struct sockaddr *)clientAddr, sizeof(clientAddr));
     if(ret == -1)
     {
         UDP_SERVER_SET_ERR(server, UDP_SERVER_ERR_WRITE, errno);
@@ -148,7 +148,7 @@ int udpServer_sendDataEx(udpServer *server, const char* data, int dataLength, co
     clientAddr.sin_family = AF_INET;
     clientAddr.sin_port = htons(port);
     clientAddr.sin_addr.s_addr = inet_addr(addr);
-    return udpServer_sendData(server, data, dataLength, clientAddr);
+    return udpServer_sendData(server, data, dataLength, &clientAddr);
 }
 
 
